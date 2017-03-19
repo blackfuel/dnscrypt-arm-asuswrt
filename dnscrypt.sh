@@ -68,7 +68,11 @@ FOLDER="${DL%.tar.gz*}"
 if [ ! -f "$FOLDER/__package_installed" ]; then
 [ ! -f "$DL" ] && wget $URL
 [ ! -d "$FOLDER" ] && tar xzvf $DL
-cd $FOLDER
+# we could optionally download the latest list of resolvers here
+#[ ! -f "dnscrypt-resolvers.csv" ] && wget https://download.dnscrypt.org/dnscrypt-proxy/dnscrypt-resolvers.csv
+#DNS_COUNT=$(cat dnscrypt-resolvers.csv | sed -r ':a;s/^(([^"]*,?|"[^",]*",?)*"[^",]*),/\1/;ta' | cut -s -d, -f13 | cut -s -d: -f16 | wc -w)
+#[ $DNS_COUNT -ge 25 ] && cp -p dnscrypt-resolvers.csv "$FOLDER"
+cd "$FOLDER"
 
 PKG_CONFIG_PATH="$PACKAGE_ROOT/lib/pkgconfig" \
 SYSROOT="$HOME/asuswrt-merlin/release/src-rt-6.x.4708/toolchains/hndtools-arm-linux-2.6.36-uclibc-4.5.3/arm-brcm-linux-uclibcgnueabi/sysroot" \
