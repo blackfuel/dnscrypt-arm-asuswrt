@@ -14,14 +14,15 @@ PATH_CMD="$(readlink -f $0)"
 set -e
 set -x
 
-REBUILD_ALL=1
-PACKAGE_ROOT="$HOME/asuswrt-merlin-addon/dnscrypt"
+#REBUILD_ALL=0
+PACKAGE_ROOT="$HOME/asuswrt-merlin-addon/asuswrt"
 SRC="$PACKAGE_ROOT/src"
 ASUSWRT_MERLIN="$HOME/asuswrt-merlin"
 TOP="$ASUSWRT_MERLIN/release/src/router"
 SYSROOT="$ASUSWRT_MERLIN/release/src-rt-6.x.4708/toolchains/hndtools-arm-linux-2.6.36-uclibc-4.5.3/arm-brcm-linux-uclibcgnueabi/sysroot"
 PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/opt/brcm-arm/bin:/opt/brcm/hndtools-mipsel-linux/bin:/opt/brcm/hndtools-mipsel-uclibc/bin
-MAKE="make -j`nproc`"
+#MAKE="make -j`nproc`"
+MAKE="make -j1"
 
 ############# ###############################################################
 # LIBSODIUM # ###############################################################
