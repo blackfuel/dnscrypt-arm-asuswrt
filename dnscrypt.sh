@@ -27,7 +27,7 @@ echo $PATH | grep -qF /opt/brcm-arm || export PATH=$PATH:/opt/brcm-arm/bin:/opt/
 [ ! -h /opt/brcm-arm ] && sudo ln -sf $BRCMARM_TOOLCHAIN /opt/brcm-arm
 [ ! -d /projects/hnd/tools/linux ] && sudo mkdir -p /projects/hnd/tools/linux
 [ ! -h /projects/hnd/tools/linux/hndtools-arm-linux-2.6.36-uclibc-4.5.3 ] && sudo ln -sf /opt/brcm-arm /projects/hnd/tools/linux/hndtools-arm-linux-2.6.36-uclibc-4.5.3
-#sudo apt-get install makedepends libltdl-dev automake1.11
+#sudo apt-get install xutils-dev libltdl-dev automake1.11
 #MAKE="make -j`nproc`"
 MAKE="make -j1"
 
@@ -68,7 +68,7 @@ fi
 # DNSCRYPT # ################################################################
 ############ ################################################################
 
-DL="dnscrypt-proxy-1.9.4.tar.gz"
+DL="dnscrypt-proxy-1.9.5.tar.gz"
 URL="https://download.dnscrypt.org/dnscrypt-proxy/$DL"
 mkdir -p $SRC/dnscrypt && cd $SRC/dnscrypt
 FOLDER="${DL%.tar.gz*}"
