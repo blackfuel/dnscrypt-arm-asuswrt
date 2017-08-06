@@ -1,9 +1,11 @@
 #!/bin/bash
 #############################################################################
-# Dnscrypt for AsusWRT
+# Static Dnscrypt for AsusWRT
 #
 # This script downloads and compiles all packages needed for adding 
-# dnscrypt-proxy capability to Asus ARM routers.
+# dnscrypt-proxy capability to Asus ARM routers.  The resulting binary will
+# be named dnscrypt-proxy.static, having statically linked libsodium, and the
+# only dependency is the AsusWRT libraries.
 #
 # Before running this script, you must first compile your router firmware so
 # that it generates the AsusWRT libraries.  Do not "make clean" as this will
@@ -38,7 +40,7 @@ MAKE="make -j1"
 DL="libsodium-1.0.13.tar.gz"
 #URL="https://github.com/jedisct1/libsodium/releases/download/1.0.12/$DL"
 URL="https://download.libsodium.org/libsodium/releases/$DL"
-mkdir -p $SRC/libsodium && cd $SRC/libsodium
+mkdir -p $SRC/libsodium-static && cd $SRC/libsodium-static
 FOLDER="${DL%.tar.gz*}"
 [ "$REBUILD_ALL" == "1" ] && rm -rf "$FOLDER"
 if [ ! -f "$FOLDER/__package_installed" ]; then
@@ -49,19 +51,21 @@ cd $FOLDER
 PKG_CONFIG_PATH="$PACKAGE_ROOT/lib/pkgconfig" \
 OPTS="-ffunction-sections -fdata-sections -O3 -pipe -march=armv7-a -mtune=cortex-a9 -fno-caller-saves -mfloat-abi=soft -Wall -fPIC -std=gnu99" \
 CFLAGS="$OPTS" CPPFLAGS="$OPTS" \
-LDFLAGS="-ffunction-sections -fdata-sections -Wl,--gc-sections" \
+LDFLAGS="-static -static-libgcc -s -ffunction-sections -fdata-sections -Wl,--gc-sections" \
 ./configure \
 --host=arm-brcm-linux-uclibcgnueabi \
 '--build=' \
 --prefix=$PACKAGE_ROOT \
---disable-static \
---enable-shared \
+--enable-static \
+--disable-shared \
 --disable-silent-rules \
 --enable-opt \
 --with-pthreads
 
 $MAKE
 make install
+#cp -p src/libsodium/.libs/libsodium.a $PACKAGE_ROOT/lib
+#cp -p src/libsodium/.libs/libsodium.la $PACKAGE_ROOT/lib
 touch __package_installed
 fi
 
@@ -71,7 +75,7 @@ fi
 
 DL="dnscrypt-proxy-1.9.5.tar.gz"
 URL="https://download.dnscrypt.org/dnscrypt-proxy/$DL"
-mkdir -p $SRC/dnscrypt && cd $SRC/dnscrypt
+mkdir -p $SRC/dnscrypt-static && cd $SRC/dnscrypt-static
 FOLDER="${DL%.tar.gz*}"
 [ "$REBUILD_ALL" == "1" ] && rm -rf "$FOLDER"
 if [ ! -f "$FOLDER/__package_installed" ]; then
@@ -84,20 +88,21 @@ if [ ! -f "$FOLDER/__package_installed" ]; then
 cd "$FOLDER"
 
 PKG_CONFIG_PATH="$PACKAGE_ROOT/lib/pkgconfig" \
-SYSROOT="$HOME/asuswrt-merlin/release/src-rt-6.x.4708/toolchains/hndtools-arm-linux-2.6.36-uclibc-4.5.3/arm-brcm-linux-uclibcgnueabi/sysroot" \
 TOP="$HOME/asuswrt-merlin/release/src/router" \
 OPTS="-ffunction-sections -fdata-sections -O3 -pipe -march=armv7-a -mtune=cortex-a9 -fno-caller-saves -mfloat-abi=soft -Wall -fPIC -std=gnu99 -I$PACKAGE_ROOT/include" \
 CFLAGS="$OPTS" CPPFLAGS="$OPTS" \
-LDFLAGS="-ffunction-sections -fdata-sections -Wl,--gc-sections -L$PACKAGE_ROOT/lib" \
+LDFLAGS="-static -static-libgcc -s -ffunction-sections -fdata-sections -Wl,--gc-sections -L$PACKAGE_ROOT/lib" \
 ./configure \
 --host=arm-brcm-linux-uclibcgnueabi \
 '--build=' \
 --prefix=$PACKAGE_ROOT \
---disable-static \
---enable-shared \
+--enable-static \
+--disable-shared \
 --disable-silent-rules
 
 $MAKE
-make install
+#make install
+cp -p src/proxy/dnscrypt-proxy $PACKAGE_ROOT/sbin/dnscrypt-proxy.static
 touch __package_installed
 fi
+
