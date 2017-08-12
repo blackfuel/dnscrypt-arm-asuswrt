@@ -51,7 +51,7 @@ cd $FOLDER
 PKG_CONFIG_PATH="$PACKAGE_ROOT/lib/pkgconfig" \
 OPTS="-ffunction-sections -fdata-sections -O3 -pipe -march=armv7-a -mtune=cortex-a9 -fno-caller-saves -mfloat-abi=soft -Wall -fPIC -std=gnu99" \
 CFLAGS="$OPTS" CPPFLAGS="$OPTS" \
-LDFLAGS="-static -static-libgcc -s -ffunction-sections -fdata-sections -Wl,--gc-sections" \
+LDFLAGS="-static -ffunction-sections -fdata-sections -Wl,--gc-sections" \
 ./configure \
 --host=arm-brcm-linux-uclibcgnueabi \
 '--build=' \
@@ -91,7 +91,7 @@ PKG_CONFIG_PATH="$PACKAGE_ROOT/lib/pkgconfig" \
 TOP="$HOME/asuswrt-merlin/release/src/router" \
 OPTS="-ffunction-sections -fdata-sections -O3 -pipe -march=armv7-a -mtune=cortex-a9 -fno-caller-saves -mfloat-abi=soft -Wall -fPIC -std=gnu99 -I$PACKAGE_ROOT/include" \
 CFLAGS="$OPTS" CPPFLAGS="$OPTS" \
-LDFLAGS="-static -static-libgcc -s -ffunction-sections -fdata-sections -Wl,--gc-sections -L$PACKAGE_ROOT/lib" \
+LDFLAGS="-static -ffunction-sections -fdata-sections -Wl,--gc-sections -L$PACKAGE_ROOT/lib" \
 ./configure \
 --host=arm-brcm-linux-uclibcgnueabi \
 '--build=' \
