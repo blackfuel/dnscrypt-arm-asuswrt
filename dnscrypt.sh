@@ -35,8 +35,7 @@ MAKE="make -j1"
 # LIBSODIUM # ###############################################################
 ############# ###############################################################
 
-DL="libsodium-1.0.14.tar.gz"
-#URL="https://github.com/jedisct1/libsodium/releases/download/1.0.12/$DL"
+DL="libsodium-1.0.16.tar.gz"
 URL="https://download.libsodium.org/libsodium/releases/$DL"
 mkdir -p $SRC/libsodium && cd $SRC/libsodium
 FOLDER="${DL%.tar.gz*}"
