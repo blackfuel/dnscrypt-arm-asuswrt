@@ -73,8 +73,8 @@ fi
 # DNSCRYPT # ################################################################
 ############ ################################################################
 
-DL="dnscrypt-proxy-1.9.5.tar.gz"
-URL="https://download.dnscrypt.org/dnscrypt-proxy/$DL"
+DL="dnscrypt-proxy_1.9.5.orig.tar.gz"
+URL="http://http.debian.net/debian/pool/main/d/dnscrypt-proxy/$DL"
 mkdir -p $SRC/dnscrypt-static && cd $SRC/dnscrypt-static
 FOLDER="${DL%.tar.gz*}"
 [ "$REBUILD_ALL" == "1" ] && rm -rf "$FOLDER"
@@ -82,13 +82,12 @@ if [ ! -f "$FOLDER/__package_installed" ]; then
 [ ! -f "$DL" ] && wget $URL
 [ ! -d "$FOLDER" ] && tar xzvf $DL
 # we could optionally download the latest list of resolvers here
-#[ ! -f "dnscrypt-resolvers.csv" ] && wget https://download.dnscrypt.org/dnscrypt-proxy/dnscrypt-resolvers.csv
+#[ ! -f "dnscrypt-resolvers.csv" ] && wget https://raw.githubusercontent.com/dyne/dnscrypt-proxy/master/dnscrypt-resolvers.csv
 #DNS_COUNT=$(cat dnscrypt-resolvers.csv | sed -r ':a;s/^(([^"]*,?|"[^",]*",?)*"[^",]*),/\1/;ta' | cut -s -d, -f13 | cut -s -d: -f16 | wc -w)
 #[ $DNS_COUNT -ge 25 ] && cp -p dnscrypt-resolvers.csv "$FOLDER"
 cd "$FOLDER"
 
 PKG_CONFIG_PATH="$PACKAGE_ROOT/lib/pkgconfig" \
-TOP="$HOME/asuswrt-merlin/release/src/router" \
 OPTS="-ffunction-sections -fdata-sections -O3 -pipe -march=armv7-a -mtune=cortex-a9 -fno-caller-saves -mfloat-abi=soft -Wall -fPIC -std=gnu99 -I$PACKAGE_ROOT/include" \
 CFLAGS="$OPTS" CPPFLAGS="$OPTS" \
 LDFLAGS="-static -ffunction-sections -fdata-sections -Wl,--gc-sections -L$PACKAGE_ROOT/lib" \
